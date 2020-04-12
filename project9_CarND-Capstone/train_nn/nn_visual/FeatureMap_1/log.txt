@@ -1,0 +1,125 @@
+________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input_1 (InputLayer)         (None, 600, 800, 3)       0         
+_________________________________________________________________
+lambda_1 (Lambda)            (None, 96, 96, 3)         0         
+_________________________________________________________________
+lambda_2 (Lambda)            (None, 96, 96, 3)         0         
+_________________________________________________________________
+conv2d_1 (Conv2D)            (None, 94, 94, 8)         224       
+_________________________________________________________________
+max_pooling2d_1 (MaxPooling2 (None, 47, 47, 8)         0         
+_________________________________________________________________
+conv2d_2 (Conv2D)            (None, 45, 45, 16)        1168      
+_________________________________________________________________
+max_pooling2d_2 (MaxPooling2 (None, 22, 22, 16)        0         
+_________________________________________________________________
+dropout_1 (Dropout)          (None, 22, 22, 16)        0         
+_________________________________________________________________
+conv2d_3 (Conv2D)            (None, 20, 20, 32)        4640      
+_________________________________________________________________
+max_pooling2d_3 (MaxPooling2 (None, 10, 10, 32)        0         
+_________________________________________________________________
+conv2d_4 (Conv2D)            (None, 8, 8, 64)          18496     
+_________________________________________________________________
+max_pooling2d_4 (MaxPooling2 (None, 4, 4, 64)          0         
+_________________________________________________________________
+dropout_2 (Dropout)          (None, 4, 4, 64)          0         
+_________________________________________________________________
+dense_1 (Dense)              (None, 4, 4, 128)         8320      
+_________________________________________________________________
+dropout_3 (Dropout)          (None, 4, 4, 128)         0         
+_________________________________________________________________
+flatten_1 (Flatten)          (None, 2048)              0         
+_________________________________________________________________
+dense_2 (Dense)              (None, 4)                 8196      
+=================================================================
+Total params: 41,044
+Trainable params: 41,044
+Non-trainable params: 0
+_________________________________________________________________
+None
+Training started
+Epoch 1/25
+2020-02-06 23:33:06.011004: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2020-02-06 23:33:06.011102: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+2020-02-06 23:33:06.011153: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+2020-02-06 23:33:06.011201: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX2 instructions, but these are available on your machine and could speed up CPU computations.
+11/12 [==========================>...] - ETA: 0s - loss: 0.2056 - acc: 0.2699Epoch 00000: val_acc improved from -inf to 0.34375, saving model to best_weights.hdf5
+12/12 [==============================] - 7s - loss: 0.2058 - acc: 0.2604 - val_loss: 0.2021 - val_acc: 0.3438
+Epoch 2/25
+11/12 [==========================>...] - ETA: 0s - loss: 0.1871 - acc: 0.3135Epoch 00001: val_acc improved from 0.34375 to 0.44286, saving model to best_weights.hdf5
+12/12 [==============================] - 6s - loss: 0.1870 - acc: 0.3109 - val_loss: 0.1908 - val_acc: 0.4429
+Epoch 3/25
+11/12 [==========================>...] - ETA: 0s - loss: 0.1825 - acc: 0.3486Epoch 00002: val_acc improved from 0.44286 to 0.47143, saving model to best_weights.hdf5
+12/12 [==============================] - 5s - loss: 0.1826 - acc: 0.3505 - val_loss: 0.1807 - val_acc: 0.4714
+Epoch 4/25
+11/12 [==========================>...] - ETA: 0s - loss: 0.1758 - acc: 0.4237Epoch 00003: val_acc improved from 0.47143 to 0.55714, saving model to best_weights.hdf5
+12/12 [==============================] - 6s - loss: 0.1758 - acc: 0.4276 - val_loss: 0.1712 - val_acc: 0.5571
+Epoch 5/25
+11/12 [==========================>...] - ETA: 0s - loss: 0.1718 - acc: 0.4327Epoch 00004: val_acc improved from 0.55714 to 0.65714, saving model to best_weights.hdf5
+12/12 [==============================] - 5s - loss: 0.1717 - acc: 0.4356 - val_loss: 0.1657 - val_acc: 0.6571
+Epoch 6/25
+11/12 [==========================>...] - ETA: 0s - loss: 0.1649 - acc: 0.5100Epoch 00005: val_acc did not improve
+12/12 [==============================] - 5s - loss: 0.1652 - acc: 0.5068 - val_loss: 0.1580 - val_acc: 0.6429
+Epoch 7/25
+11/12 [==========================>...] - ETA: 0s - loss: 0.1548 - acc: 0.5845Epoch 00006: val_acc did not improve
+12/12 [==============================] - 6s - loss: 0.1551 - acc: 0.5858 - val_loss: 0.1462 - val_acc: 0.6571
+Epoch 8/25
+11/12 [==========================>...] - ETA: 0s - loss: 0.1500 - acc: 0.5889Epoch 00007: val_acc did not improve
+12/12 [==============================] - 5s - loss: 0.1508 - acc: 0.5843 - val_loss: 0.1426 - val_acc: 0.6571
+Epoch 9/25
+11/12 [==========================>...] - ETA: 0s - loss: 0.1430 - acc: 0.6303Epoch 00008: val_acc improved from 0.65714 to 0.71429, saving model to best_weights.hdf5
+12/12 [==============================] - 5s - loss: 0.1437 - acc: 0.6272 - val_loss: 0.1294 - val_acc: 0.7143
+Epoch 10/25
+11/12 [==========================>...] - ETA: 0s - loss: 0.1371 - acc: 0.6327Epoch 00009: val_acc did not improve
+12/12 [==============================] - 6s - loss: 0.1370 - acc: 0.6348 - val_loss: 0.1173 - val_acc: 0.7143
+Epoch 11/25
+11/12 [==========================>...] - ETA: 0s - loss: 0.1273 - acc: 0.6338Epoch 00010: val_acc improved from 0.71429 to 0.72857, saving model to best_weights.hdf5
+12/12 [==============================] - 5s - loss: 0.1252 - acc: 0.6462 - val_loss: 0.1095 - val_acc: 0.7286
+Epoch 12/25
+11/12 [==========================>...] - ETA: 0s - loss: 0.1233 - acc: 0.6996Epoch 00011: val_acc improved from 0.72857 to 0.77143, saving model to best_weights.hdf5
+12/12 [==============================] - 5s - loss: 0.1220 - acc: 0.7064 - val_loss: 0.1030 - val_acc: 0.7714
+Epoch 13/25
+11/12 [==========================>...] - ETA: 0s - loss: 0.1156 - acc: 0.7131Epoch 00012: val_acc did not improve
+12/12 [==============================] - 5s - loss: 0.1158 - acc: 0.7152 - val_loss: 0.1012 - val_acc: 0.7571
+Epoch 14/25
+11/12 [==========================>...] - ETA: 0s - loss: 0.1093 - acc: 0.7642Epoch 00013: val_acc did not improve
+12/12 [==============================] - 5s - loss: 0.1090 - acc: 0.7630 - val_loss: 0.0996 - val_acc: 0.7571
+Epoch 15/25
+11/12 [==========================>...] - ETA: 0s - loss: 0.1037 - acc: 0.7643Epoch 00014: val_acc did not improve
+12/12 [==============================] - 5s - loss: 0.1023 - acc: 0.7631 - val_loss: 0.0901 - val_acc: 0.7571
+Epoch 16/25
+11/12 [==========================>...] - ETA: 0s - loss: 0.0921 - acc: 0.8109Epoch 00015: val_acc improved from 0.77143 to 0.80000, saving model to best_weights.hdf5
+12/12 [==============================] - 6s - loss: 0.0914 - acc: 0.8110 - val_loss: 0.0723 - val_acc: 0.8000
+Epoch 17/25
+11/12 [==========================>...] - ETA: 0s - loss: 0.0814 - acc: 0.8325Epoch 00016: val_acc improved from 0.80000 to 0.84286, saving model to best_weights.hdf5
+12/12 [==============================] - 6s - loss: 0.0813 - acc: 0.8335 - val_loss: 0.0639 - val_acc: 0.8429
+Epoch 18/25
+11/12 [==========================>...] - ETA: 0s - loss: 0.0780 - acc: 0.8268Epoch 00017: val_acc did not improve
+12/12 [==============================] - 5s - loss: 0.0776 - acc: 0.8257 - val_loss: 0.0694 - val_acc: 0.8429
+Epoch 19/25
+11/12 [==========================>...] - ETA: 0s - loss: 0.0696 - acc: 0.8819Epoch 00018: val_acc improved from 0.84286 to 0.85714, saving model to best_weights.hdf5
+12/12 [==============================] - 5s - loss: 0.0697 - acc: 0.8841 - val_loss: 0.0561 - val_acc: 0.8571
+Epoch 20/25
+11/12 [==========================>...] - ETA: 0s - loss: 0.0613 - acc: 0.8955Epoch 00019: val_acc improved from 0.85714 to 0.88571, saving model to best_weights.hdf5
+12/12 [==============================] - 5s - loss: 0.0610 - acc: 0.8964 - val_loss: 0.0531 - val_acc: 0.8857
+Epoch 21/25
+11/12 [==========================>...] - ETA: 0s - loss: 0.0592 - acc: 0.9188Epoch 00020: val_acc did not improve
+12/12 [==============================] - 5s - loss: 0.0602 - acc: 0.9154 - val_loss: 0.0534 - val_acc: 0.8857
+Epoch 22/25
+11/12 [==========================>...] - ETA: 0s - loss: 0.0539 - acc: 0.9506Epoch 00021: val_acc improved from 0.88571 to 0.92857, saving model to best_weights.hdf5
+12/12 [==============================] - 5s - loss: 0.0529 - acc: 0.9521 - val_loss: 0.0414 - val_acc: 0.9286
+Epoch 23/25
+11/12 [==========================>...] - ETA: 0s - loss: 0.0496 - acc: 0.9335Epoch 00022: val_acc did not improve
+12/12 [==============================] - 5s - loss: 0.0490 - acc: 0.9364 - val_loss: 0.0429 - val_acc: 0.9286
+Epoch 24/25
+11/12 [==========================>...] - ETA: 0s - loss: 0.0442 - acc: 0.9648Epoch 00023: val_acc did not improve
+12/12 [==============================] - 6s - loss: 0.0435 - acc: 0.9625 - val_loss: 0.0328 - val_acc: 0.9286
+Epoch 25/25
+11/12 [==========================>...] - ETA: 0s - loss: 0.0414 - acc: 0.9648Epoch 00024: val_acc improved from 0.92857 to 0.94286, saving model to best_weights.hdf5
+12/12 [==============================] - 6s - loss: 0.0409 - acc: 0.9678 - val_loss: 0.0322 - val_acc: 0.9429
+weights saved successfully
+Model saved successfully
+
