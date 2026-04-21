@@ -8,24 +8,23 @@ import math
 import glob
 
 import tensorflow as tf
-from keras import backend as K
-from keras import models, optimizers
-from keras.preprocessing import image
-from keras.preprocessing.image import ImageDataGenerator
-from keras.callbacks import ModelCheckpoint
+from tensorflow.keras import backend as K
+from tensorflow.keras import models, optimizers
+from tensorflow.keras.preprocessing import image
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.callbacks import ModelCheckpoint
 
-from keras.models import Model
+from tensorflow.keras.models import Model
 import matplotlib.pyplot as plt
 
-from keras.utils.np_utils import to_categorical
-from keras.utils import plot_model
-from keras.layers import Conv2D, Dense, Dropout, Flatten, Lambda, Activation, MaxPooling2D, Reshape, Input, concatenate
+from tensorflow.keras.utils import to_categorical
+from tensorflow.keras.utils import plot_model
+from tensorflow.keras.layers import Conv2D, Dense, Dropout, Flatten, Lambda, Activation, MaxPooling2D, Reshape, Input, concatenate
 
 # Fix the random number
 from numpy.random import seed
 seed(1)
-from tensorflow import set_random_seed
-set_random_seed(2)
+tf.random.set_seed(2)
 
 BATCH_SIZE = 32
 EPOCHS = 60
@@ -83,7 +82,7 @@ def get_model(LOG_PATH):
     
     inp = Input(shape = (row,col,ch))
     
-    resize = Lambda(lambda image: K.tf.image.resize_images(image,(96,96)))(inp)
+    resize = Lambda(lambda image: tf.image.resize(image,(96,96)))(inp)
 
     Standadization = Lambda(lambda x: x/127.5 - 1.,input_shape=(96,96,ch),output_shape=(96,96,ch))(resize)
  
@@ -117,7 +116,7 @@ def get_model(LOG_PATH):
     """
     inp = Input(shape = (row,col,ch))
     
-    resize = Lambda(lambda image: K.tf.image.resize_images(image,(100,75)))(inp)
+    resize = Lambda(lambda image: tf.image.resize(image,(100,75)))(inp)
 
     Standadization = Lambda(lambda x: x/127.5 - 1.,input_shape=(100,75,ch),output_shape=(100,75,ch))(resize)
  
@@ -156,7 +155,7 @@ def get_model(LOG_PATH):
     with open(LOG_PATH,"w") as fh:
         model.summary(print_fn = lambda x: fh.write(x + '\n'))
     
-    model.compile(optimizer='adam', loss = 'mse',metrics=['acc'])
+    model.compile(optimizer='adam', loss = 'mse',metrics=['accuracy'])
     return model, conv1
     
 def load_image(path):
@@ -179,8 +178,8 @@ def plot_models(history,c_FILE):
     #plot_model(model,to_file=PATH)
     
     # protting accuracy for record
-    plt.plot(history.history['acc'])
-    plt.plot(history.history['val_acc'])
+    plt.plot(history.history['accuracy'])
+    plt.plot(history.history['val_accuracy'])
     plt.title("Model Accuracy")
     plt.ylabel('Accuracy')
     plt.xlabel('Epoch')
@@ -273,7 +272,7 @@ if __name__ == "__main__":
     
     """
     # When training, use checkpointer and history
-    checkpointer = ModelCheckpoint(filepath="best_weights.hdf5",monitor = "val_acc",
+    checkpointer = ModelCheckpoint(filepath="best_weights.hdf5",monitor = "val_accuracy",
                                    verbose=1,save_best_only=True)
     
     history = model.fit_generator(
