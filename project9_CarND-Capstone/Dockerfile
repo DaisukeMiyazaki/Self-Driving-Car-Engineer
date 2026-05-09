@@ -15,10 +15,11 @@ RUN apt-get install -y ros-$ROS_DISTRO-dbw-mkz
 RUN apt-get upgrade -y
 # end installing Dataspeed DBW
 
-# install python packages
+# install python packages with uv (faster resolver/installer than pip)
 RUN apt-get install -y python3-pip
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 COPY requirements.txt ./requirements.txt
-RUN pip3 install -r requirements.txt
+RUN uv pip install --system --no-cache -r requirements.txt
 
 # install required ros dependencies
 RUN apt-get install -y ros-$ROS_DISTRO-cv-bridge
