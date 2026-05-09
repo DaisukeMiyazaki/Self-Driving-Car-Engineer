@@ -125,7 +125,7 @@ class TLDetector(object):
         cv2.imwrite(image_path,image)
         
         # debug and health check
-        print "Image stored successfully at : ", image_path
+        print("Image stored successfully at :", image_path)
     
     def image_cb(self, msg):
         """Identifies red lights in the incoming camera image and publishes the index
@@ -266,17 +266,18 @@ class TLDetector(object):
             
             diff = len(self.waypoints.waypoints)
             for i, light in enumerate(self.lights):
-        		line = stop_line_positions[i]
-        		
-        		# get the stop light line way point index
-        		temp_wp_idx = self.get_closest_waypoint(line[0], line[1])
-        		d = temp_wp_idx - car_wp_idx
-        		if d >= 0 and d < diff:
-        			diff = d
-        			closest_light = light
-        			state = closest_light.state
-        			line_wp_idx = temp_wp_idx
-        			
+                line = stop_line_positions[i]
+
+                # get the stop light line way point index
+                temp_wp_idx = self.get_closest_waypoint(line[0], line[1])
+                d = temp_wp_idx - car_wp_idx
+                if d >= 0 and d < diff:
+                    diff = d
+                    closest_light = light
+                    state = closest_light.state
+                    line_wp_idx = temp_wp_idx
+
+
         if (closest_light) and ((line_wp_idx - car_wp_idx) <= WAYPOINT_AFAR):
             # when camera is on and NN is oon, take out the comment out below
             #state = self.get_light_state(closest_light)

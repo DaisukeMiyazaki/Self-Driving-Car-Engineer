@@ -1,0 +1,113 @@
+# CARLA + carla_ros_bridge + capstone (ROS Noetic) + rosbridge_server
+#
+# Headless SSH-only deployment. CARLA runs with -RenderOffScreen, so no X11
+# session is required on the host. See docs/remote-access.md for the full
+# rationale and hardware prerequisites.
+#
+# Host prerequisites (Ubuntu 24.04 + AMD RX 7800 XT):
+#   sudo apt install mesa-va-drivers vainfo vulkan-tools mesa-vulkan-drivers
+#   sudo usermod -aG video,render $USER   # then SSH back in
+#
+# Port layout:
+#   2000-2002  CARLA RPC / streaming / control
+#   9090       rosbridge WebSocket (Foxglove from Mac via Tailscale)
+#   11311      ROS master (internal)
+#
+# All services run with network_mode: host so roscore + CARLA + rosbridge can
+# talk over localhost without DNS gymnastics. Linux-only behavior.
+
+services:
+  carla:
+    image: carlasim/carla:0.9.15
+    container_name: carla-server
+    network_mode: host
+    devices:
+      - /dev/dri:/dev/dri          # AMD GPU passthrough (replaces NVIDIA --gpus all)
+    group_add:
+      - video
+      - render
+    volumes:
+      - /dev/shm:/dev/shm
+    user: "${UID:-1000}:${GID:-1000}"
+    # Headless: GPU is used for compute (raycasts, sensor rendering) but no window
+    # is opened. Spectator-camera viewing happens on the Mac via the CARLA Python
+    # API client (route B in docs/remote-access.md).
+    command: >
+      /bin/bash -c "./CarlaUE4.sh -vulkan -RenderOffScreen -quality-level=Low"
+    restart: unless-stopped
+    stop_grace_period: 5s
+
+  ros-bridge:
+    build:
+      context: ./docker/ros-bridge
+      args:
+        CARLA_VERSION: "0.9.15"
+        BRIDGE_TAG: "0.9.15"
+    image: carnd/carla-ros-bridge:noetic
+    container_name: carla-ros-bridge
+    network_mode: host
+    depends_on:
+      - carla
+    environment:
+      - ROS_MASTER_URI=http://localhost:11311
+      - ROS_HOSTNAME=localhost
+    command: >
+      bash -c "
+        roscore &
+        sleep 3 &&
+        roslaunch carla_ros_bridge carla_ros_bridge_with_example_ego_vehicle.launch
+          host:=localhost port:=2000 town:=Town01
+      "
+    restart: unless-stopped
+
+  # rosbridge_server exposes ROS topics over WebSocket so Foxglove (running in
+  # the user's Mac browser via Tailscale) can subscribe. See route C in
+  # docs/remote-access.md.
+  rosbridge:
+    image: ros:noetic-ros-base
+    container_name: rosbridge-server
+    network_mode: host
+    depends_on:
+      - ros-bridge
+    environment:
+      - ROS_MASTER_URI=http://localhost:11311
+      - ROS_HOSTNAME=localhost
+    command: >
+      bash -c "
+        apt-get update &&
+        apt-get install -y --no-install-recommends ros-noetic-rosbridge-server &&
+        source /opt/ros/noetic/setup.bash &&
+        roslaunch rosbridge_server rosbridge_websocket.launch port:=9090
+      "
+    restart: unless-stopped
+
+  capstone:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: carnd/capstone:noetic
+    container_name: carnd-capstone
+    network_mode: host
+    depends_on:
+      - ros-bridge
+    environment:
+      - ROS_MASTER_URI=http://localhost:11311
+      - ROS_HOSTNAME=localhost
+    volumes:
+      - .:/capstone:rw
+    working_dir: /capstone/ros
+    # NOTE: This launches the capstone ROS nodes against the ros-bridge roscore,
+    # but the CARLA<->capstone topic adapter (PoseStamped, Image, etc.) is NOT
+    # yet implemented. See docs/simulator-landscape.md for the gap analysis.
+    # For now, this container builds the workspace and drops you into a shell.
+    command: >
+      bash -c "
+        source /opt/ros/noetic/setup.bash &&
+        catkin_make &&
+        source devel/setup.bash &&
+        echo '[capstone] workspace built. Adapter not yet wired — open a shell:' &&
+        echo '   docker compose exec capstone bash' &&
+        sleep infinity
+      "
+    stdin_open: true
+    tty: true

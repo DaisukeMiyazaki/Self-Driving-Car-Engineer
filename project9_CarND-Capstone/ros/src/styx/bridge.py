@@ -159,7 +159,7 @@ class Bridge(object):
         self.publishers['obstacle_points'].publish(cloud)
 
     def publish_lidar(self, data):
-        self.publishers['lidar'].publish(self.create_point_cloud_message(zip(data['lidar_x'], data['lidar_y'], data['lidar_z'])))
+        self.publishers['lidar'].publish(self.create_point_cloud_message(list(zip(data['lidar_x'], data['lidar_y'], data['lidar_z']))))
 
     def publish_traffic(self, data):
         x, y, z = data['light_pos_x'], data['light_pos_y'], data['light_pos_z'],

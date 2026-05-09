@@ -1,5 +1,5 @@
 # Udacity capstone project dockerfile
-FROM ros:kinetic-robot
+FROM ros:noetic-robot
 LABEL maintainer="olala7846@gmail.com"
 
 # Install Dataspeed DBW https://goo.gl/KFSYi1 from binary
@@ -15,10 +15,11 @@ RUN apt-get install -y ros-$ROS_DISTRO-dbw-mkz
 RUN apt-get upgrade -y
 # end installing Dataspeed DBW
 
-# install python packages
-RUN apt-get install -y python-pip
+# install python packages with uv (faster resolver/installer than pip)
+RUN apt-get install -y python3-pip
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 COPY requirements.txt ./requirements.txt
-RUN pip install -r requirements.txt
+RUN uv pip install --system --no-cache -r requirements.txt
 
 # install required ros dependencies
 RUN apt-get install -y ros-$ROS_DISTRO-cv-bridge

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import eventlet
 eventlet.monkey_patch(socket=True, select=True, time=True)
@@ -63,7 +63,7 @@ def image(sid, data):
 if __name__ == '__main__':
 
     # wrap Flask application with engineio's middleware
-    app = socketio.Middleware(sio, app)
+    app = socketio.WSGIApp(sio, app)
 
     # deploy as an eventlet WSGI server
     eventlet.wsgi.server(eventlet.listen(('', 4567)), app)
