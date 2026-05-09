@@ -12,6 +12,8 @@ PORTABILITY.md は「このキャップストーンのコードを別のシム�
 
 PORTABILITY.md と重複する部分は要点のみ参照する形にとどめ、本ドキュメントは**周辺事情と判断材料の蓄積**を目的とする。
 
+立てたシムを Mac など別端末から触るためのリモートアクセス構成は [`docs/remote-access.md`](./remote-access.md) に分離している（**ヘッドレス SSH 運用前提でルート B + C を採用、ルート A の Sunshine は見送り**）。
+
 ---
 
 ## 1. 起点：`dbw_mkz_simulator` の現状
